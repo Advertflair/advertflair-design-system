@@ -1,0 +1,9 @@
+/*
+ * Tailwind v4 entry point.
+ * Import this instead of "@import 'tailwindcss'" alone.
+ * The design system declares @theme inline + @custom-variant dark, so all brand
+ * tokens become utilities automatically (e.g. bg-af-purple, text-af-pink,
+ * bg-primary, text-muted-foreground).
+ */
+@import "tailwindcss";
+@import "./advertflair-design-system.css";
