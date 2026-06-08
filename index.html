@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advertflair Design System - Live Demo</title>
+  <link rel="stylesheet" href="advertflair-design-system.css" />
+  <style>
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .swatches { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .swatch { width: 130px; }
+    .swatch .chip { height: 64px; border-radius: 12px; border: 1px solid var(--border); }
+    .swatch .name { font-size: 0.8rem; margin-top: 0.4rem; color: var(--muted-foreground); }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    }
+  </script>
+
+  <main class="section-padding">
+    <div class="container-custom">
+      <div class="toolbar">
+        <span class="eyebrow">Advertflair Design System</span>
+        <button class="pill-button pill-button-secondary" onclick="toggleTheme()">Toggle theme</button>
+      </div>
+
+      <h1>Built for <em class="text-gradient-brand">conversion</em>, not decoration.</h1>
+      <p style="max-width: 640px; color: var(--muted-foreground);">
+        Urbanist headings, Inter body, pink&rarr;orange CTAs, light/dark via a single class.
+        Everything below is pulled from the production stylesheet.
+      </p>
+
+      <div class="btn-row">
+        <button class="shiny-cta"><span style="position:relative;z-index:10">$2K Pilot - Prove It Or Walk &rarr;</span></button>
+        <button class="pill-button pill-button-primary">Get Started &rarr;</button>
+        <button class="pill-button pill-button-secondary">Learn More</button>
+        <button class="pill-button pill-button-ghost">Cancel</button>
+      </div>
+
+      <h3 style="margin-top: 3rem;">Palette</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#4934bc"></div><div class="name">Purple #4934bc</div></div>
+        <div class="swatch"><div class="chip" style="background:#fe2267"></div><div class="name">Pink #fe2267</div></div>
+        <div class="swatch"><div class="chip" style="background:#ff9e02"></div><div class="name">Orange #ff9e02</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#fe2267,#ff9e02)"></div><div class="name">Brand gradient</div></div>
+        <div class="swatch"><div class="chip" style="background:#08060f"></div><div class="name">Dark #08060f</div></div>
+      </div>
+
+      <div class="demo-grid">
+        <div class="card">
+          <h3>Basic card</h3>
+          <p style="color: var(--muted-foreground);">Lifts on hover, 14px radius, themed border.</p>
+        </div>
+        <div class="pipeline-card-sweep">
+          <div style="position: relative; z-index: 1; padding: 2rem;">
+            <h3>Pipeline card</h3>
+            <p style="color: var(--muted-foreground);">Spinning gradient border + light sweep.</p>
+          </div>
+        </div>
+        <div class="glass-card">
+          <h3>Glass card</h3>
+          <p style="color: var(--muted-foreground);">Best on dark or gradient backgrounds.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
