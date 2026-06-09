@@ -1,0 +1,54 @@
+/*
+ * Advertflair design system - EXTENSIONS
+ * Import AFTER advertflair-design-system.css:
+ *   @import "./advertflair-design-system.css";
+ *   @import "./theme-extensions.css";
+ *
+ * Adds: (1) semantic status colors, (2) an opt-in "classic" neutral palette.
+ */
+
+/* 1. SEMANTIC STATUS COLORS (additive - no conflict) */
+:root {
+  --success: #22c55e;   /* approvals, success states */
+  --warning: #f59e0b;   /* warnings, pending states */
+  --error:   #ef4444;   /* errors, overdue states */
+  --info:    #3b82f6;   /* info messages, tooltips */
+  --af-orange-alt: #ff6b35; /* chatbot / secondary orange accent */
+}
+
+@theme inline {
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+  --color-af-orange-alt: var(--af-orange-alt);
+}
+
+/* 2. CLASSIC NEUTRAL PALETTE (opt-in alternate)
+   Default (no class)         = production neutrals (#f8fafc / #1a1530 / #110e1c)
+   class="theme-classic"      = brand-guide light neutrals (#ffffff / #0a0a0a)
+   class="dark theme-classic" = brand-guide dark neutrals  (#08060f / #1a1625)
+   Brand purple/pink/orange + dark #08060f are identical in both, so only the
+   neutrals are overridden here. */
+.theme-classic {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --muted: #f5f5f5;
+  --muted-foreground: #6b6b6b;
+  --border: rgba(0, 0, 0, 0.1);
+  --af-elevated: #f8f7fb;
+}
+
+.dark.theme-classic,
+.theme-classic.dark {
+  --background: #08060f;
+  --foreground: #f5f5f5;
+  --card: #1a1625;
+  --card-foreground: #f5f5f5;
+  --muted: #1a1625;
+  --muted-foreground: #a3a3a3;
+  --border: rgba(255, 255, 255, 0.1);
+  --af-elevated: #110e1c;
+}
