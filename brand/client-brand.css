@@ -1,0 +1,96 @@
+/* Advertflair design system - brand layer. v1.0
+ *
+ * One structure, any brand. Copy this file, rename it (for example brand/acme.css),
+ * edit ONLY section 1, and load it LAST, after:
+ *   advertflair-design-system.css, the enterprise tokens.css, motion.css, ai-chat.css.
+ * With the default values below it changes nothing: this is the Advertflair brand.
+ * Intake questions and the checklist are in brand/BRANDING.md.
+ */
+
+/* ---------- 1. BRAND INPUTS: the only block you edit ---------- */
+:root {
+  --brand-primary: #4934bc;             /* interactivity, links, focus ring, selected states */
+  --brand-on-primary: #ffffff;          /* text on the primary colour, 4.5:1 or better */
+  --brand-primary-on-dark: #8b7ff5;     /* primary used as text, links or accent on dark surfaces */
+  --brand-on-primary-on-dark: #111111;  /* text on that lighter primary */
+
+  --brand-cta-from: #fe2267;            /* primary button gradient start */
+  --brand-cta-to: #ff9e02;              /* primary button gradient end (same as start = solid) */
+  --brand-on-cta: #ffffff;              /* primary button label; must pass 4.5:1 for client brands */
+
+  --brand-font-heading: 'Urbanist', sans-serif;
+  --brand-font-body: 'Inter', sans-serif;
+
+  --brand-radius: 0.875rem;             /* cards and panels: 0.875rem default, 0.5rem tighter, 0.125rem square */
+  --brand-radius-control: 360px;        /* buttons and inputs: 360px pill, 10px rounded, 2px square */
+}
+
+/* ---------- 2. MAPPINGS: do not edit ---------- */
+
+/* 2a. Website / shadcn tokens (advertflair-design-system.css) */
+:root, .dark {
+  --primary: var(--brand-primary);
+  --primary-foreground: var(--brand-on-primary);
+  --ring: var(--brand-primary);
+  --sidebar-primary: var(--brand-primary);
+  --sidebar-primary-foreground: var(--brand-on-primary);
+  --sidebar-ring: var(--brand-primary);
+  --af-purple: var(--brand-primary);
+  --af-pink: var(--brand-cta-from);
+  --af-orange: var(--brand-cta-to);
+  --radius: var(--brand-radius);
+}
+
+/* 2b. Enterprise app tokens (skills/enterprise-design). Semantic colours
+       (--ok, --wn, --er) are never remapped: status means the same in every brand. */
+:root, [data-color-mode="dark"], [data-color-mode="light"] {
+  --in: var(--brand-primary);
+  --or: var(--brand-cta-from);
+  --cta-to: var(--brand-cta-to);
+  --on-cta: var(--brand-on-cta);
+  --font-display: var(--brand-font-heading);
+  --font-body: var(--brand-font-body);
+  --r-control: var(--brand-radius-control);
+}
+:root, [data-color-mode="dark"] { --in-2: var(--brand-primary-on-dark); }
+[data-color-mode="light"] { --in-2: var(--brand-primary); }
+
+/* 2c. AI chat tokens (components/ai-chat) */
+:root {
+  --ai-accent: var(--brand-primary);
+  --ai-on-accent: var(--brand-on-primary);
+  --ai-orb: var(--brand-primary);
+  --ai-font: var(--brand-font-body);
+}
+.dark, [data-theme="dark"], [data-color-mode="dark"] {
+  --ai-accent: var(--brand-primary-on-dark);
+  --ai-on-accent: var(--brand-on-primary-on-dark);
+  --ai-orb: var(--brand-primary-on-dark);
+}
+
+/* 2d. Fonts */
+body, p, label, button, input, textarea, select,
+.caption, .input, .textarea, .pill-button { font-family: var(--brand-font-body); }
+h1, h2, h3, h4, h5, h6,
+.eyebrow, .font-display, .font-heading { font-family: var(--brand-font-heading); }
+
+/* 2e. Classes in advertflair-design-system.css that hard-code the Advertflair colours */
+.gradient-brand, .text-gradient-brand, .bg-gradient-brand, .pill-button-primary {
+  background-image: linear-gradient(135deg, var(--brand-cta-from), var(--brand-cta-to));
+}
+.gradient-brand-vertical { background-image: linear-gradient(180deg, var(--brand-primary), var(--brand-cta-from)); }
+.gradient-brand-full { background-image: linear-gradient(135deg, var(--brand-primary), var(--brand-cta-from), var(--brand-cta-to)); }
+.text-gradient-purple-pink, .bg-gradient-purple-pink {
+  background-image: linear-gradient(135deg, var(--brand-primary), var(--brand-cta-from));
+}
+.pill-button { border-radius: var(--brand-radius-control); }
+.pill-button-primary {
+  color: var(--brand-on-cta);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--brand-cta-from) 20%, transparent);
+}
+.pill-button-primary:hover { box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-cta-from) 30%, transparent); }
+.pill-button-primary:active { box-shadow: 0 2px 8px color-mix(in srgb, var(--brand-cta-from) 20%, transparent); }
+.input:focus, .textarea:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 10%, transparent); }
+.glow-purple { box-shadow: 0 0 20px color-mix(in srgb, var(--brand-primary) 30%, transparent); }
+.glow-pink { box-shadow: 0 0 20px color-mix(in srgb, var(--brand-cta-from) 30%, transparent); }
+.glow-orange { box-shadow: 0 0 20px color-mix(in srgb, var(--brand-cta-to) 30%, transparent); }

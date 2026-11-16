@@ -1,0 +1,98 @@
+/* ============================================================
+ * Enterprise Design System — tokens.css
+ * Advertflair standard for new enterprise app builds.
+ * Import once at the app root (before component styles / Tailwind).
+ *
+ * Theming: set data-color-mode="dark|light" on <html>; the
+ * .vv-dark / .vv-light body classes are mirrored for legacy CSS.
+ * Default is dark. See references/tokens.md.
+ * ============================================================ */
+
+/* ---- Google Fonts (or self-host the same families) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ---- Dark mode (default + authoritative) ---- */
+:root,
+[data-color-mode="dark"] {
+  --bg:  #08060f;
+  --s1:  #110e1c;
+  --s2:  #1a1530;
+  --h:   #1e1a2e;
+  --br:  rgba(255, 255, 255, 0.08);
+  --tx:  #e2e8f0;
+  --lt:  #cbd5e1;
+  --m:   #94a3b8;
+  --in:  #4934bc;
+  --in-2: #8b7ff5;  /* lighter indigo — for indigo TEXT/links on dark surfaces */
+  --or:  #fe2267;
+  --wn:  #ff9e02;
+  --ok:  #22c55e;
+  --er:  #ef4444;
+  /* solid-button fills that keep white text at WCAG AA (use for .btn-g/.btn-r) */
+  --ok-fill: #15803d;
+  --er-fill: #c81e1e;
+
+  --r:   14px;
+  --rs:  8px;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --sh-1:   0 8px 24px rgba(0, 0, 0, 0.4);
+  --sh-2:   0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(73, 52, 188, 0.06);
+  --sh-pop: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+/* ---- Light mode (full parity) ---- */
+[data-color-mode="light"] {
+  --bg:  #f6f6fb;
+  --s1:  #ffffff;
+  --s2:  #f0edfa;
+  --h:   #e9e5f7;
+  --br:  rgba(17, 13, 38, 0.10);
+  --tx:  #15121f;
+  --lt:  #3c3750;
+  --m:   #6a6580;
+  --in:  #4934bc;
+  --in-2: #4934bc;  /* indigo already AA on light; same value */
+  --or:  #fe2267;
+  --wn:  #b45309;   /* amber-ink for text/icons on white */
+  --ok:  #15803d;   /* green-ink for text/icons on white */
+  --er:  #dc2626;
+  --ok-fill: #15803d;
+  --er-fill: #dc2626;
+
+  --r:   14px;
+  --rs:  8px;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --sh-1:   0 1px 3px rgba(17, 13, 38, 0.08), 0 4px 12px rgba(17, 13, 38, 0.06);
+  --sh-2:   0 12px 40px rgba(17, 13, 38, 0.14);
+  --sh-pop: 0 6px 20px rgba(17, 13, 38, 0.12);
+
+  color-scheme: light;
+}
+
+/* ---- Base ---- */
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-display { font-family: var(--font-display, 'Urbanist', sans-serif); }
+
+::selection { background: rgba(73, 52, 188, 0.35); }
+
+:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--in); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}

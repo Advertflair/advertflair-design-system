@@ -21,6 +21,10 @@ The production design system behind **advertflair.ai** and the Advertflair websi
 | `PATTERNS.md` | Shiny-CTA usage, hero/feature/CTA/nav templates, scroll gallery, contact form. |
 | `DESIGN-SYSTEM-GUIDE.md` | Implementation guide with examples. |
 | `skills/advertflair-ux-motion/` | **UX and motion standard** (v1.0): how much to animate, motion tokens, hit targets, UX laws and device rules. Installable as a Claude skill; `assets/motion.css` is the drop-in file. |
+| `skills/enterprise-design/` | **Enterprise app design skill**: tokens, components and layout for dashboards, portals and admin tools. Starts by asking whose brand the build is for. |
+| `skills/advertflair-ai-chat-ui/` | **AI chat and assistant standard**: anatomy, behaviour, voice, brand theming and review checklist for in-app helpers. |
+| `components/ai-chat/` | Ready-to-copy AI helper: `AiAssistant.tsx`, `Orb.tsx`, `brand.ts`, `ai-chat.css` (React + TypeScript, Lucide icons). |
+| `brand/` | **Client branding**: `client-brand.css` (the one file to edit per client), `BRANDING.md` (intake questions and steps), `check-contrast.mjs`. |
 | `index.html` | Live demo with a light/dark toggle. |
 
 ---
@@ -70,6 +74,22 @@ Every interface follows `skills/advertflair-ux-motion/SKILL.md`. Start with `ref
 - **Claude Code:** copy `skills/advertflair-ux-motion` into your repo's `.claude/skills/` so UI work loads it automatically.
 
 The five rules: the more often something is used, the less it animates; app UI stays restrained (marketing pages may be expressive); token durations and curves only; 44px targets on touch and nothing that depends on hover; acknowledge every input within 100ms.
+
+### Building for a client brand
+Same system, different colours and fonts. Answer the five questions in `brand/BRANDING.md`, copy `brand/client-brand.css`, edit the inputs at the top, and load it last:
+
+```html
+<link rel="stylesheet" href="advertflair-design-system.css">
+<link rel="stylesheet" href="skills/advertflair-ux-motion/assets/motion.css">
+<link rel="stylesheet" href="brand/acme.css">  <!-- the client's copy of client-brand.css -->
+```
+Then run `node brand/check-contrast.mjs` with the client's colours. Spacing, components, motion and accessibility stay the same for every brand.
+
+### AI helper
+Copy `components/ai-chat/` into the app and follow `skills/advertflair-ai-chat-ui/SKILL.md` for wiring and the review checklist. It needs `react` and `lucide-react`. Colours come from the `--ai-*` tokens, which the brand file sets for you.
+
+### Skills for Claude
+Copy the folders in `skills/` into your repo's `.claude/skills/` (shared through git) or `~/.claude/skills/` (personal). Use all three together: `enterprise-design` for look, `advertflair-ux-motion` for behaviour, `advertflair-ai-chat-ui` for assistants.
 
 ### Dark mode toggle
 ```js

@@ -28,8 +28,8 @@ export default {
         "af-elevated": "#1a1530",
       },
       fontFamily: {
-        heading: ["Urbanist", "sans-serif"],
-        sans: ["Inter", "sans-serif"],
+        heading: ["var(--brand-font-heading, Urbanist)", "sans-serif"],
+        sans: ["var(--brand-font-body, Inter)", "sans-serif"],
         "blog-serif": ["DM Serif Display", "serif"],
         "blog-sans": ["Instrument Sans", "sans-serif"],
       },
