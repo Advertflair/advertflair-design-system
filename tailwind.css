@@ -7,3 +7,4 @@
  */
 @import "tailwindcss";
 @import "./advertflair-design-system.css";
+@import "./skills/advertflair-ux-motion/assets/motion.css"; /* UX and motion standard */

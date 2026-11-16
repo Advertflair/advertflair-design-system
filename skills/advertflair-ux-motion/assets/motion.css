@@ -1,0 +1,223 @@
+/* Advertflair UX and Motion Standard - drop-in tokens and utilities. v1.0
+   Import once at the app root, after the design-system tokens:
+     @import "./motion.css";
+   Works with or without Tailwind. Pairs with tailwind-motion-preset.js. */
+
+:root {
+  /* Durations */
+  --dur-instant: 100ms;
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+  --dur-page: 400ms;
+
+  /* Easing. --ease-out matches --ease in enterprise-design. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* dial 3 only */
+
+  /* Distances and scales */
+  --dist-sm: 4px;
+  --dist-md: 8px;
+  --dist-lg: 16px;
+  --scale-press: 0.97;
+  --scale-pop: 0.96;
+  --stagger: 30ms;
+
+  /* Hit target: mouse default. Raised for touch below. */
+  --hit: 24px;
+  --control-h: 32px;
+  --focus-ring: var(--in, #4934bc);
+}
+
+/* Touch and other coarse pointers get larger targets. */
+@media (pointer: coarse) {
+  :root {
+    --hit: 44px;
+    --control-h: 44px;
+  }
+}
+
+/* ---------- Interaction basics ---------- */
+
+/* Visible keyboard focus. Never animated, never removed. */
+.ux-focus:focus-visible,
+:where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Remove the 300ms tap delay and the grey tap flash on touch devices. */
+.ux-touch,
+:where(a, button, [role="button"], input, select, textarea, label, summary) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Press feedback: works for touch and mouse. */
+.ux-press {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.ux-press:active {
+  transform: scale(var(--scale-press));
+  transition-duration: var(--dur-instant);
+}
+
+/* Extend the tappable area of a small control without changing how it looks. */
+.ux-hit {
+  position: relative;
+}
+.ux-hit::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--hit));
+  height: max(100%, var(--hit));
+  transform: translate(-50%, -50%);
+}
+
+/* Minimum control size that adapts to the input device. */
+.ux-control {
+  min-height: var(--control-h);
+  min-width: var(--control-h);
+}
+
+/* Hover effects only where a real hover exists. */
+@media (hover: hover) and (pointer: fine) {
+  .ux-hover-tint {
+    transition: background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .ux-hover-tint:hover {
+    background-color: var(--h, rgba(73, 52, 188, 0.08));
+  }
+  /* Dial 2+: gentle card lift. */
+  .ux-hover-lift {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .ux-hover-lift:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ---------- Entrances and exits ----------
+   Keyed to data-state="open|closed" so they work with Radix and shadcn/ui. */
+
+@keyframes ux-fade-in { from { opacity: 0; } }
+@keyframes ux-fade-out { to { opacity: 0; } }
+@keyframes ux-rise-in { from { opacity: 0; transform: translateY(var(--dist-md)); } }
+@keyframes ux-rise-out { to { opacity: 0; transform: translateY(var(--dist-sm)); } }
+@keyframes ux-pop-in { from { opacity: 0; transform: scale(var(--scale-pop)); } }
+@keyframes ux-pop-out { to { opacity: 0; transform: scale(var(--scale-pop)); } }
+@keyframes ux-slide-in-end { from { transform: translateX(100%); } }
+@keyframes ux-slide-out-end { to { transform: translateX(100%); } }
+@keyframes ux-slide-in-start { from { transform: translateX(-100%); } }
+@keyframes ux-slide-out-start { to { transform: translateX(-100%); } }
+@keyframes ux-sheet-in { from { transform: translateY(100%); } }
+@keyframes ux-sheet-out { to { transform: translateY(100%); } }
+@keyframes ux-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+/* Backdrop, simple fades */
+.ux-fade { animation: ux-fade-in var(--dur-base) var(--ease-out) both; }
+.ux-fade[data-state="closed"] { animation: ux-fade-out var(--dur-fast) var(--ease-in) both; }
+
+/* Modal, toast, card */
+.ux-rise { animation: ux-rise-in var(--dur-slow) var(--ease-out) both; }
+.ux-rise[data-state="closed"] { animation: ux-rise-out var(--dur-base) var(--ease-in) both; }
+
+/* Dropdown, popover, menu. Set transform-origin to the trigger side.
+   Radix exposes it as var(--radix-popover-content-transform-origin) and similar. */
+.ux-pop { animation: ux-pop-in var(--dur-fast) var(--ease-out) both; }
+.ux-pop[data-state="closed"] { animation: ux-pop-out var(--dur-instant) var(--ease-in) both; }
+
+/* Drawer from the inline end (right in left-to-right layouts) */
+.ux-drawer-end { animation: ux-slide-in-end var(--dur-slow) var(--ease-out) both; }
+.ux-drawer-end[data-state="closed"] { animation: ux-slide-out-end var(--dur-base) var(--ease-in) both; }
+[dir="rtl"] .ux-drawer-end { animation-name: ux-slide-in-start; }
+[dir="rtl"] .ux-drawer-end[data-state="closed"] { animation-name: ux-slide-out-start; }
+
+/* Drawer from the inline start */
+.ux-drawer-start { animation: ux-slide-in-start var(--dur-slow) var(--ease-out) both; }
+.ux-drawer-start[data-state="closed"] { animation: ux-slide-out-start var(--dur-base) var(--ease-in) both; }
+[dir="rtl"] .ux-drawer-start { animation-name: ux-slide-in-end; }
+[dir="rtl"] .ux-drawer-start[data-state="closed"] { animation-name: ux-slide-out-end; }
+
+/* Bottom sheet (phone) */
+.ux-sheet { animation: ux-sheet-in var(--dur-slow) var(--ease-out) both; }
+.ux-sheet[data-state="closed"] { animation: ux-sheet-out var(--dur-base) var(--ease-in) both; }
+
+/* Dialog: bottom sheet on phones, centred rise from 768px up.
+   Centre the panel with a grid wrapper, not translate(-50%), so the entrance transform does not fight it. */
+.ux-dialog { animation: ux-sheet-in var(--dur-slow) var(--ease-out) both; }
+.ux-dialog[data-state="closed"] { animation: ux-sheet-out var(--dur-base) var(--ease-in) both; }
+@media (min-width: 768px) {
+  .ux-dialog { animation-name: ux-rise-in; }
+  .ux-dialog[data-state="closed"] { animation-name: ux-rise-out; }
+}
+
+/* Opened from the keyboard: no entrance. Add data-instant on the element. */
+[data-instant] { animation: none !important; transition: none !important; }
+
+/* List or grid first load. Set style="--i: 0", "--i: 1" ... on each child.
+   Only the first 6 stagger; the rest arrive together. */
+.ux-stagger > * {
+  animation: ux-rise-in var(--dur-base) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 6) * var(--stagger));
+}
+
+/* Accordion: the one allowed layout animation. Child must have min-height: 0; overflow: hidden. */
+.ux-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-out);
+}
+.ux-collapse[data-state="open"] { grid-template-rows: 1fr; }
+.ux-collapse > * { min-height: 0; overflow: hidden; }
+
+/* Error shake: dial 2+ only. */
+.ux-shake { animation: ux-shake var(--dur-slow) var(--ease-in-out); }
+
+/* ---------- Device helpers ---------- */
+
+.ux-screen-h { min-height: 100vh; min-height: 100dvh; }
+.ux-safe-top { padding-top: max(var(--pad, 0px), env(safe-area-inset-top)); }
+.ux-safe-bottom { padding-bottom: max(var(--pad, 0px), env(safe-area-inset-bottom)); }
+.ux-safe-x {
+  padding-left: max(var(--pad, 0px), env(safe-area-inset-left));
+  padding-right: max(var(--pad, 0px), env(safe-area-inset-right));
+}
+
+/* iOS zooms the page when a focused field is under 16px. */
+@media (pointer: coarse) {
+  input, select, textarea { font-size: max(16px, 1em); }
+}
+
+/* ---------- Reduced motion: less, not none ----------
+   Movement and scale are removed; opacity fades remain. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dist-sm: 0px;
+    --dist-md: 0px;
+    --dist-lg: 0px;
+    --scale-press: 1;
+    --scale-pop: 1;
+    --stagger: 0ms;
+    --ease-spring: var(--ease-out);
+  }
+  .ux-drawer-end, .ux-drawer-start, .ux-sheet, .ux-dialog { animation-name: ux-fade-in; animation-duration: var(--dur-fast); }
+  .ux-drawer-end[data-state="closed"],
+  .ux-drawer-start[data-state="closed"],
+  .ux-sheet[data-state="closed"],
+  .ux-dialog[data-state="closed"] { animation-name: ux-fade-out; animation-duration: var(--dur-instant); }
+  .ux-hover-lift:hover { transform: none; }
+  .ux-shake { animation: none; }
+  .ux-collapse { transition: none; }
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-iteration-count: 1 !important; }
+}
