@@ -2,7 +2,7 @@
 
 The production design system behind **advertflair.ai** and the Advertflair website pages, exported as portable tokens, CSS, Tailwind config, the shadcn/ui component set, and copy-paste page patterns. Drop it into any project (or hand it to any tool / agent) to instantly match the brand.
 
-> Source of truth: `advertflair-design-system.css`, mirrored from the [Figma Make export](https://github.com/Advertflair/Advertflairwebsitepage). Tokens version `1.1.0`.
+> Source of truth: `advertflair-design-system.css`, mirrored from the [Figma Make export](https://github.com/Advertflair/Advertflairwebsitepage). Tokens version `1.2.0`.
 
 ---
 
@@ -20,6 +20,7 @@ The production design system behind **advertflair.ai** and the Advertflair websi
 | `COMPONENTS.md` | Full 46-component list, one-command install for the rest, dependency list. |
 | `PATTERNS.md` | Shiny-CTA usage, hero/feature/CTA/nav templates, scroll gallery, contact form. |
 | `DESIGN-SYSTEM-GUIDE.md` | Implementation guide with examples. |
+| `skills/advertflair-ux-motion/` | **UX and motion standard** (v1.0): how much to animate, motion tokens, hit targets, UX laws and device rules. Installable as a Claude skill; `assets/motion.css` is the drop-in file. |
 | `index.html` | Live demo with a light/dark toggle. |
 
 ---
@@ -32,7 +33,7 @@ The production design system behind **advertflair.ai** and the Advertflair websi
 - **Fonts:** Urbanist (headings) / Inter (body). DM Serif Display + Instrument Sans reserved for blog.
 - **Theme:** light default (`#f8fafc`) / dark (`#08060f`), toggled with a `.dark` class on `<html>`.
 - **Signature components:** `shiny-cta` button, pill buttons, glass + pipeline cards.
-- **Easing:** `cubic-bezier(0.23, 1, 0.32, 1)` everywhere.
+- **Easing:** `cubic-bezier(0.23, 1, 0.32, 1)` for entrances and moves (`--ease-out`); exits use `--ease-in`. Durations and the rest of the motion rules live in `skills/advertflair-ux-motion/`.
 
 ### Two neutral palettes
 The default neutrals are the **production** values (`#f8fafc` / `#1a1530` / `#110e1c`, 60px H1). A second **classic** palette from the brand-guide lineage (`#ffffff` / `#0a0a0a` / `#1a1625`) ships as an opt-in: add `class="theme-classic"` (or `class="dark theme-classic"`) on `<html>`. Both share the same brand colors and dark `#08060f` — only the neutrals differ.
@@ -57,6 +58,18 @@ Then use utilities like `bg-af-purple`, `text-af-pink`, `bg-primary`, `text-succ
 
 ### Components
 See `COMPONENTS.md` — the core primitives are in `components/ui/`; install the rest with one `npx shadcn add` command. See `PATTERNS.md` for the page-level building blocks.
+
+### UX and motion standard
+Every interface follows `skills/advertflair-ux-motion/SKILL.md`. Start with `references/principles.md` if you are new to it.
+
+```html
+<link rel="stylesheet" href="skills/advertflair-ux-motion/assets/motion.css">
+```
+- **Tailwind v4:** already included through `tailwind.css`. `ease-out`, `ease-in` and `ease-in-out` pick up the tokens; use `duration-(--dur-fast)`, `min-h-(--control-h)` and the `.ux-*` classes.
+- **Tailwind v3:** `tailwind.config.ts` maps the tokens (`duration-fast`, `ease-out`, `min-h-control`). For the `touch:` / `mouse:` variants and hover-only-where-supported, add `skills/advertflair-ux-motion/assets/tailwind-motion-preset.js` as a preset.
+- **Claude Code:** copy `skills/advertflair-ux-motion` into your repo's `.claude/skills/` so UI work loads it automatically.
+
+The five rules: the more often something is used, the less it animates; app UI stays restrained (marketing pages may be expressive); token durations and curves only; 44px targets on touch and nothing that depends on hover; acknowledge every input within 100ms.
 
 ### Dark mode toggle
 ```js
